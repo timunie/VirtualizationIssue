@@ -12,20 +12,17 @@
     mc:Ignorable="d">
     <Grid>
         <Grid.Resources>
-            <DataTemplate DataType="{x:Type local:DaySchedule}">
-                <StackPanel>
-                    <TextBlock Text="{Binding Name}" />
-                    <ListView ItemsSource="{Binding Appointments}" Style="{StaticResource MahApps.Styles.ListView.Virtualized}">
-                        <ListView.View>
-                            <GridView>
-                                <GridViewColumn DisplayMemberBinding="{Binding DateTime}" Header="DateTime" />
-                            </GridView>
-                        </ListView.View>
-                    </ListView>
-                </StackPanel>
-            </DataTemplate>
+            <HierarchicalDataTemplate DataType="{x:Type local:DaySchedule}" ItemsSource="{Binding Appointments}">
+                <TextBlock Text="{Binding Name}" />
+                <HierarchicalDataTemplate.ItemTemplate>
+                    <DataTemplate DataType="{x:Type local:Appointment}">
+                        <TextBlock Text="{Binding DateTime}" />
+                    </DataTemplate>
+                </HierarchicalDataTemplate.ItemTemplate>
+            </HierarchicalDataTemplate>
         </Grid.Resources>
-        <ListView ItemsSource="{Binding DaySchedules}" Style="{StaticResource MahApps.Styles.ListView.Virtualized}" />
+        
+        <TreeView ItemsSource="{Binding DaySchedules}" Style="{DynamicResource MahApps.Styles.TreeView.Virtualized}" />
     </Grid>
 
 </Window>
