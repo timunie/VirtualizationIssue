@@ -15,7 +15,7 @@
             <DataTemplate DataType="{x:Type local:DaySchedule}">
                 <StackPanel>
                     <TextBlock Text="{Binding Name}" />
-                    <ListView ItemsSource="{Binding Appointments}" Style="{StaticResource MahApps.Styles.ListView.Virtualized}">
+                    <ListView ItemsSource="{Binding Appointments}" Style="{StaticResource MahApps.Styles.ListView.Virtualized}" MaxHeight="500">
                         <ListView.View>
                             <GridView>
                                 <GridViewColumn DisplayMemberBinding="{Binding DateTime}" Header="DateTime" />
