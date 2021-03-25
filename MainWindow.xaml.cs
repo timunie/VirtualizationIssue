@@ -31,28 +31,26 @@ namespace VirtualizationIssue
 
     public class TimeTable
     {
-        public ObservableCollection<DaySchedule> DaySchedules { get; set; } = new ObservableCollection<DaySchedule>();
+        public ObservableCollection<Appointment> Appointments { get; } = new ObservableCollection<Appointment>();
 
         public TimeTable()
         {
             for (int i = 0; i < 2000; i++)
             {
-                DaySchedules.Add(new DaySchedule(i));
+                var daySchedule = new DaySchedule(i);
+                for (int j = 0; j < 2000; j++)
+                {
+                    Appointments.Add(new Appointment() { DateTime = DateTime.Now + TimeSpan.FromDays(j), Group = daySchedule });
+                }
             }
         }
     }
 
     public class DaySchedule
     {
-        public ObservableCollection<Appointment> Appointments { get; set; } = new ObservableCollection<Appointment>();
-
         public DaySchedule(int i)
         {
             Name = $"Name: {i}";
-            for (int j = 0; j < 2000; j++)
-            {
-                Appointments.Add(new Appointment() { DateTime = DateTime.Now + TimeSpan.FromDays(j) });
-            }
         }
 
         public string Name { get; set; }
@@ -61,5 +59,7 @@ namespace VirtualizationIssue
     public class Appointment
     {
         public DateTime DateTime { get; set; }
+
+        public DaySchedule Group { get; set; }
     }
 }

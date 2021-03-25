@@ -6,26 +6,45 @@
     xmlns:local="clr-namespace:VirtualizationIssue"
     xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DataContext="{d:DesignInstance Type=local:TimeTable}"
     Title="MainWindow"
     Width="800"
     Height="450"
     mc:Ignorable="d">
     <Grid>
         <Grid.Resources>
-            <DataTemplate DataType="{x:Type local:DaySchedule}">
-                <StackPanel>
-                    <TextBlock Text="{Binding Name}" />
-                    <ListView ItemsSource="{Binding Appointments}" Style="{StaticResource MahApps.Styles.ListView.Virtualized}">
-                        <ListView.View>
-                            <GridView>
-                                <GridViewColumn DisplayMemberBinding="{Binding DateTime}" Header="DateTime" />
-                            </GridView>
-                        </ListView.View>
-                    </ListView>
-                </StackPanel>
-            </DataTemplate>
+            <CollectionViewSource Source="{Binding Appointments}" x:Key="My.Collections.TimeTable">
+                <CollectionViewSource.GroupDescriptions>
+                    <PropertyGroupDescription PropertyName="Group" />
+                </CollectionViewSource.GroupDescriptions>
+            </CollectionViewSource>
         </Grid.Resources>
-        <ListView ItemsSource="{Binding DaySchedules}" Style="{StaticResource MahApps.Styles.ListView.Virtualized}" />
+        <ListView ItemsSource="{Binding Source={StaticResource My.Collections.TimeTable}}" 
+                  Style="{StaticResource MahApps.Styles.ListView.Virtualized}" 
+                  VirtualizingPanel.IsVirtualizingWhenGrouping="True">
+            <ListView.GroupStyle>
+                <GroupStyle>
+                    <GroupStyle.ContainerStyle>
+                        <Style TargetType="{x:Type GroupItem}">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type GroupItem}">
+                                        <Expander Header="{Binding Name.Name}" IsExpanded="True" Margin="5">
+                                            <ItemsPresenter Margin="20,0,0,0" />
+                                        </Expander>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </GroupStyle.ContainerStyle>
+                </GroupStyle>
+            </ListView.GroupStyle>
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="DateTime" DisplayMemberBinding="{Binding DateTime}" />
+                </GridView>
+            </ListView.View>
+        </ListView>
     </Grid>
 
 </Window>
